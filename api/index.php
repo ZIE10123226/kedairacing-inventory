@@ -14,6 +14,7 @@ $dirs = [
     $tmpStorage . '/framework/testing',
     $tmpStorage . '/framework/views',
     $tmpStorage . '/logs',
+    $tmpStorage . '/bootstrap/cache',
 ];
 foreach ($dirs as $dir) {
     if (!is_dir($dir)) {
@@ -24,10 +25,24 @@ foreach ($dirs as $dir) {
 // Step 2: Force environment variables for Vercel BEFORE autoload
 $_ENV['VIEW_COMPILED_PATH'] = $tmpStorage . '/framework/views';
 $_ENV['APP_STORAGE']        = $tmpStorage;
+$_ENV['APP_SERVICES_CACHE'] = $tmpStorage . '/bootstrap/cache/services.php';
+$_ENV['APP_PACKAGES_CACHE'] = $tmpStorage . '/bootstrap/cache/packages.php';
+$_ENV['APP_CONFIG_CACHE']   = $tmpStorage . '/bootstrap/cache/config.php';
+$_ENV['APP_ROUTES_CACHE']   = $tmpStorage . '/bootstrap/cache/routes-v7.php';
+$_ENV['APP_EVENTS_CACHE']   = $tmpStorage . '/bootstrap/cache/events.php';
 $_SERVER['VIEW_COMPILED_PATH'] = $tmpStorage . '/framework/views';
-$_SERVER['APP_STORAGE']        = $tmpStorage;
+$_SERVER['APP_SERVICES_CACHE'] = $tmpStorage . '/bootstrap/cache/services.php';
+$_SERVER['APP_PACKAGES_CACHE'] = $tmpStorage . '/bootstrap/cache/packages.php';
+$_SERVER['APP_CONFIG_CACHE']   = $tmpStorage . '/bootstrap/cache/config.php';
+$_SERVER['APP_ROUTES_CACHE']   = $tmpStorage . '/bootstrap/cache/routes-v7.php';
+$_SERVER['APP_EVENTS_CACHE']   = $tmpStorage . '/bootstrap/cache/events.php';
 putenv('VIEW_COMPILED_PATH=' . $tmpStorage . '/framework/views');
 putenv('APP_STORAGE=' . $tmpStorage);
+putenv('APP_SERVICES_CACHE=' . $tmpStorage . '/bootstrap/cache/services.php');
+putenv('APP_PACKAGES_CACHE=' . $tmpStorage . '/bootstrap/cache/packages.php');
+putenv('APP_CONFIG_CACHE=' . $tmpStorage . '/bootstrap/cache/config.php');
+putenv('APP_ROUTES_CACHE=' . $tmpStorage . '/bootstrap/cache/routes-v7.php');
+putenv('APP_EVENTS_CACHE=' . $tmpStorage . '/bootstrap/cache/events.php');
 
 // Step 3: Load Laravel
 try {
