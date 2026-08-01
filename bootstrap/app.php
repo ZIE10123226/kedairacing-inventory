@@ -21,7 +21,17 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions): void {
         // On Vercel (serverless), always return JSON to avoid view dependency in error handler.
         // The Vue SPA frontend handles its own error display.
-        $exceptions->shouldRenderJsonWhen(
-            fn (Request $request) => true,
-        );
+        $exceptions->render(function (\Throwable $e, Request $request) {
+            if (isset($_ENV['VERCEL'])) {
+                return new \Illuminate\Http\JsonResponse([
+                    'error_message' => $e->getMessage(),
+                    'error_class' => get_class($e),
+                    'error_trace' => $e->getTraceAsString()
+                ], 500);
+            }
+        });
+        
+        $exceptions->shouldRenderJsonWhen(function (Request $request) {
+            return true;
+        });
     })->create();
