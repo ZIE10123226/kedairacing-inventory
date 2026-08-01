@@ -19,7 +19,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->statefulApi(); // Enable stateful Sanctum API
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        // On Vercel (serverless), always return JSON to avoid view dependency in error handler.
+        // The Vue SPA frontend handles its own error display.
         $exceptions->shouldRenderJsonWhen(
-            fn (Request $request) => $request->is('api/*'),
+            fn (Request $request) => true,
         );
     })->create();
