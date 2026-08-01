@@ -7,17 +7,17 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Step 1: Run Vite build
 console.log('Building Vue assets with Vite...');
-execSync('vite build', { stdio: 'inherit' });
+execSync('npm run build', { stdio: 'inherit' });
 
 // Step 2: Read the manifest
-const manifestPath = path.join(__dirname, 'public/build/.vite/manifest.json');
-const manifestFallback = path.join(__dirname, 'public/build/manifest.json');
+const manifestPath = join(__dirname, 'public/build/.vite/manifest.json');
+const manifestFallback = join(__dirname, 'public/build/manifest.json');
 
 let manifest;
 try {
-    manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+    manifest = JSON.parse(readFileSync(manifestPath, 'utf-8'));
 } catch {
-    manifest = JSON.parse(fs.readFileSync(manifestFallback, 'utf-8'));
+    manifest = JSON.parse(readFileSync(manifestFallback, 'utf-8'));
 }
 
 // Step 3: Get the main JS and CSS entry points
@@ -50,8 +50,8 @@ ${cssLinks}    </head>
 </html>
 `;
 
-const outputPath = path.join(__dirname, 'public/index.html');
-fs.writeFileSync(outputPath, html);
+const outputPath = join(__dirname, 'public/index.html');
+writeFileSync(outputPath, html);
 
 console.log(`✅ Generated static index.html → public/index.html`);
 console.log(`   JS:  /build/${jsFile}`);
