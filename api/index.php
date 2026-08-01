@@ -1,15 +1,14 @@
 <?php
-/**
- * Forward Vercel requests to normal Laravel routing
- */
 
 try {
     require __DIR__ . '/../vendor/autoload.php';
-    $app = require_once __DIR__ . '/../bootstrap/app.php';
 
-    // Ensure /tmp/storage exists for Vercel
-    $storagePath = $_ENV['APP_STORAGE'] ?? '/tmp/storage';
-    $app->useStoragePath($storagePath);
+    // Set Vercel-specific paths BEFORE bootstrapping
+    $storagePath = '/tmp/storage';
+    putenv("APP_STORAGE={$storagePath}");
+    putenv("VIEW_COMPILED_PATH={$storagePath}/framework/views");
+    $_ENV['APP_STORAGE'] = $storagePath;
+    $_ENV['VIEW_COMPILED_PATH'] = "{$storagePath}/framework/views";
 
     $dirs = [
         $storagePath . '/app/public',
@@ -25,6 +24,9 @@ try {
             mkdir($dir, 0777, true);
         }
     }
+
+    $app = require_once __DIR__ . '/../bootstrap/app.php';
+    $app->useStoragePath($storagePath);
 
     $app->handleRequest(Illuminate\Http\Request::capture());
 } catch (\Throwable $e) {
