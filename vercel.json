@@ -39,7 +39,6 @@
         "SESSION_DRIVER": "cookie",
         "QUEUE_CONNECTION": "sync",
         "VIEW_COMPILED_PATH": "/tmp/storage/framework/views",
-        "CACHE_DIR": "/tmp/storage/framework/cache",
-        "SESSION_FILES_PATH": "/tmp/storage/framework/sessions"
+        "VERCEL": "1"
     }
 }
