@@ -5,6 +5,10 @@
         {
             "src": "api/index.php",
             "use": "vercel-php@0.7.2"
+        },
+        {
+            "src": "public/**/*",
+            "use": "@vercel/static"
         }
     ],
     "routes": [
@@ -13,12 +17,8 @@
             "dest": "/api/index.php"
         },
         {
-            "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|map))",
-            "dest": "/public/$1"
-        },
-        {
             "src": "/(.*)",
-            "dest": "/public/index.html"
+            "dest": "/public/$1"
         }
     ],
     "env": {
