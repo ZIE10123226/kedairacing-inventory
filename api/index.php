@@ -44,20 +44,10 @@ putenv('APP_CONFIG_CACHE=' . $tmpStorage . '/bootstrap/cache/config.php');
 putenv('APP_ROUTES_CACHE=' . $tmpStorage . '/bootstrap/cache/routes-v7.php');
 putenv('APP_EVENTS_CACHE=' . $tmpStorage . '/bootstrap/cache/events.php');
 
-// Step 3: Fix REQUEST_URI - strip /api prefix so Laravel routes match correctly
-// Vercel routes /api/login -> this file, but Laravel api.php expects /login (not /api/login)
-if (isset($_SERVER['REQUEST_URI'])) {
-    $uri = $_SERVER['REQUEST_URI'];
-    if (str_starts_with($uri, '/api')) {
-        $_SERVER['REQUEST_URI'] = substr($uri, 4) ?: '/';
-    }
-}
-if (isset($_SERVER['PATH_INFO'])) {
-    $pathInfo = $_SERVER['PATH_INFO'];
-    if (str_starts_with($pathInfo, '/api')) {
-        $_SERVER['PATH_INFO'] = substr($pathInfo, 4) ?: '/';
-    }
-}
+// Step 3: Fix SCRIPT_NAME so Laravel resolves routes correctly on Vercel
+// Vercel sets SCRIPT_NAME to /api/index.php, Laravel must see / as the base
+$_SERVER['SCRIPT_NAME'] = '/index.php';
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
 
 // Step 4: Load Laravel
 try {
